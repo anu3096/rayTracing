@@ -1,0 +1,39 @@
+data.c Results
+	Threads		1	2	3	4	5	6	7	8	9	10
+Scale
+   1			0s	0s	0s	0s	0s	0s	0s	0s	0s	0s
+
+   2			1s	0s	0s	0s	0s	0s	0s	0s	0s	0s
+
+   3			1s	0s	1s	0s	0s	0s	1s	1s	1s	0s
+
+   4			2s	1s	1s	1s	1s	1s	0s	1s	1s	1s
+
+   5			2s	2s	2s	1s	1s	2s	1s	1s	1s	1s
+
+   6			4s	2s	2s	1s	2s	2s	1s	1s	2s	2s
+
+
+task.c Results
+	Threads		1	2	3	4	5	6	7	8	9	10
+Scale
+   1			33s	35s	36s	36s	35s	36s	37s	37s	44s	44s
+
+   2			181s	139s	144s	147s	152s	153s	161s	139s	157s	138s
+
+   3			297s	294s	320s	337s	330s	256s	257s	257s	257s	257s
+
+   4			458s	458s	462s	457s	461s	456s	458s	460s	455s	455s
+
+   5			715s	712s	719s	720s	717s	713s	713s	715s	714s	713s
+
+
+The timing tests suggests that the data parallel version performs far better than the task parallel version. The execution times seems to remain the same once the thread count reaches around 7-8 (this goes for all scale numbers). When comparing the execution times between 1 thread and 10 threads, it is very clear that the image benefits from the use of Pthreads in both data.c and task.c. Having said that, Pthreads become less useful when using smaller image scale sizes (anything less than scale 3) when it comes to the data.c program. This is because the processor in my computer is fast enough to render such a small image using 1 thread. Comparing the 2 tables the execution times for task.c is a lot longer than data.c, so I don’t think task parallelism is beneficial for a problem like this. It makes more logical sense to use data parallelism for this than task parallelism since the calculations are the same for every single pixel and since each thread can finish more sections of the image, it results in having faster performance.
+
+My Laptop Specifications:
+- MacBook Pro (Early 2015)
+- Processor: 2.70 GHz Intel Core i5-5257U (2 Cores, 4 Threads) (Max Turbo Frequency: 3.10 GHz)
+- RAM: 8 GB 1867 MHz DDR3
+
+
+
